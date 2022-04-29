@@ -1,13 +1,15 @@
-import axios from "axios";
+import { AxiosClient } from "./axiosClient";
 
 export class NameApiService {
   private MAX_LENGTH = 4;
-  public constructor() {}
+  private apiClient: AxiosClient;
+  private nameApiServieUri = "https://random-data-api.com/api/name/random_name";
+  public constructor(apiClient: AxiosClient) {
+    this.apiClient = apiClient;
+  }
 
   public async getFirstName(): Promise<string> {
-    const { data } = await axios.get(
-      "https://random-data-api.com/api/name/random_name"
-    );
+    const { data } = await this.apiClient.get(this.nameApiServieUri);
     const firstName = data.first_name as string;
 
     if (firstName.length > this.MAX_LENGTH) {
